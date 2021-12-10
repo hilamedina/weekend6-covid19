@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const urlCountries = "https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries";
+        async function getCountry() {
+            const response = await fetch(urlCountries)
+            const res = await response.json()
+            for (let item of res.data) {
+                newArr.push({
+                    "name": item.name,
+                    "code": item.code,
+                    "ConfirmedCases": item.latest_data.confirmed,
+                    "NumberofDeaths": item.latest_data.deaths,
+                    "NumberOfRecovered": item.latest_data.recovered,
+                    "NumberOfCriticalCondition": item.latest_data.critical
+                })
+            }
+            print();
+        }
+        let newArr = [];
+        console.log(getCountry());
+        function print() {
+            console.log(newArr)
+        }
+
+    </script>
+</body>
+
+</html>
