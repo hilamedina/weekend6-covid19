@@ -1,7 +1,14 @@
 .body{
     height:100vh;
 }
+.contiDiv{
+    display:flex;
+    justify-content: center;
+    border:2px red solid;
+}
 #chartContinent{
+    margin-top:10%;
     max-width:50% ;
-    height:70%;
+    max-height:30%;
+    border:2px red solid;
 }

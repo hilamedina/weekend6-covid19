@@ -37,6 +37,17 @@ const myChart = new Chart(chartContinent, {
     },
   },
 });
+
+const asiabutton = document.querySelector('.asiabutton');
+const Americabutton = document.querySelector('.Americabutton');
+const Europebutton = document.querySelector('.Europebutton');
+const Africabutton = document.querySelector('.Africabutton');
+const worldbutton = document.querySelector('.worldbutton');
+
+Asiabutton.addEventListener('click', () => {
+  console.log('hila');
+});
+
 const urlCountries =
   'https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries';
 const urlCountries =
