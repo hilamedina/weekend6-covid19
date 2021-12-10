@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let temp;
+        async function getContinents(conti) {
+            const continentApi = `https://intense-mesa-62220.herokuapp.com/https://restcountries.herokuapp.com/api/v1/region/${conti}`
+            const response = await fetch(continentApi)
+            const data = await response.json()
+            // .then(response => resolve(response.json())
+            // .catch(err => console.log(err))
+            console.log(data);
+            temp = data;
+
+        }
+        getContinents('asia')
+
+        let arrOfContinent1 = [];
+        async function continent1(temp) {
+            // const fetchContinentFromUrl = await getContinents();
+            // console.log(fetchContinentFromUrl);
+            // for (let item of fetchContinentFromUrl)
+
+            for (let item of temp) {
+                let continentObj = {};
+                continentObj['nameFromContinent'] = item.name.common;
+                continentObj['codeFromContinent'] = item.cca2;
+                arrOfContinent.push(continentObj);
+            }
+            return arrOfContinent1;
+        }
+        console.log(continent1(temp));
+
+    </script>
+
+</body>
+
+</html>

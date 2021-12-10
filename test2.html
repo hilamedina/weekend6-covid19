@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+    const urlCountries = "https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries";
+
+    //  async function country (){
+    //     const fetchCountryFromUrl = await fetch(urlCountries);
+    //     const fetchCountryFromUrlJson = await fetchCountryFromUrl.json();
+    //     console.log(fetchCountryFromUrlJson);
+    //  }
+    async function yarden() {
+        await getContinents();
+        await continent1()
+    }
+    yarden()
+
+    const temp1 = [];
+    async function getContinents1() {
+        const continentApi = `https://intense-mesa-62220.herokuapp.com/https://restcountries.herokuapp.com/api/v1/region/`
+        const response = await (await (fetch(continentApi))).json()
+        temp1 = respone
+    }
+
+    let arrOfContinent1 = [];
+    async function continent1() {
+        const fetchContinentFromUrl = await getContinents(conti)
+        for (let item of fetchContinentFromUrl) {
+            let continentObj = {};
+            continentObj['nameFromContinent'] = item.name.common;
+            continentObj['codeFromContinent'] = item.cca2;
+            arrOfContinent.push(continentObj);
+        }
+        return arrOfContinent1;
+    }
+
+
+
+    async function getContinents(conti) {
+        const continentApi = `https://intense-mesa-62220.herokuapp.com/https://restcountries.herokuapp.com/api/v1/region/${conti}`
+        const response = await (await (fetch(continentApi))).json()
+        // .then(response => resolve(response.json())
+        // .catch(err => console.log(err))
+        console.log(response);
+    }
+
+    let arrOfContinent = [];
+    async function continent() {
+        // await for something that could happen  
+        const fetchContinentFromUrl = await getContinents()
+        for (let item of fetchContinentFromUrl) {
+            let continentObj = {};
+            continentObj['nameFromContinent'] = item.name.common;
+            continentObj['codeFromContinent'] = item.cca2;
+            arrOfContinent.push(continentObj);
+        }
+        return arrOfContinent;
+    }
+    console.log(continent());
+
+    // async function country() {
+    //     let countryNameObj = {};
+    //     const fetchCountryFromUrl = await (await fetch(urlCountries)).json();
+    //     countryNameObj['nameFromCountryApi'] = fetchCountryFromUrl.data[0].name;
+    //     countryNameObj['code'] = fetchCountryFromUrl.data[0].code;
+    //     countryNameObj['deaths'] = fetchCountryFromUrl.data[0].latest_data.deaths;
+    //     countryNameObj['confirmed'] = fetchCountryFromUrl.data[0].latest_data.confirmed;
+    //     countryNameObj['recovered'] = fetchCountryFromUrl.data[0].latest_data.recovered;
+    //     countryNameObj['critical'] = fetchCountryFromUrl.data[0].latest_data.critical;
+    //     arr.push(countryNameObj);
+    //     return arr;
+    // }
+    // let arr = [];
+    // console.log(country());
+</script>
