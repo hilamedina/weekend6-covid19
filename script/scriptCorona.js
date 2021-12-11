@@ -38,7 +38,7 @@ const myChart = new Chart(chartContinent, {
   },
 });
 
-const asiabutton = document.querySelector('.asiabutton');
+const Asiabutton = document.querySelector('.Asiabutton');
 const Americabutton = document.querySelector('.Americabutton');
 const Europebutton = document.querySelector('.Europebutton');
 const Africabutton = document.querySelector('.Africabutton');
@@ -47,9 +47,8 @@ const worldbutton = document.querySelector('.worldbutton');
 Asiabutton.addEventListener('click', () => {
   console.log('hila');
 });
-
-const urlCountries =
-  'https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries';
+let newArr = [];
+const AsiaArr = [];
 const urlCountries =
   'https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries';
 async function getCountry() {
@@ -65,7 +64,55 @@ async function getCountry() {
       NumberOfCriticalCondition: item.latest_data.critical,
     });
   }
-  console.log(newArr);
+  // print();
+  return newArr;
 }
-let newArr = [];
-getCountry();
+
+const urlContinent =
+  'https://intense-mesa-62220.herokuapp.com/https://restcountries.herokuapp.com/api/v1';
+async function getConti() {
+  const fetchContinenrFromUrl = await fetch(urlContinent);
+  const fetchcontinentFromUrlJson = await fetchContinenrFromUrl.json();
+  for (let i = 0; i < fetchcontinentFromUrlJson.length; i++) {
+    for (let j = 0; j < newArr.length; j++) {
+      if (newArr[j].name === fetchcontinentFromUrlJson[i].name.common) {
+        newArr[j].region = fetchcontinentFromUrlJson[i].region;
+      }
+    }
+  }
+  return newArr;
+}
+getCountry()
+  .then((data) => {
+    console.log(data);
+  })
+  .then(() => {
+    getConti();
+    console.log(newArr);
+  })
+  .then(() => {
+    console.log(newArr);
+    console.log(newArr[0].region);
+    // newArr.forEach(function (element) {
+    //   AsiaArr.push(
+    //     newArr.filter(function (item) {
+    //       return item.region === 'Asia';
+    //   })
+    // );
+  });
+// function that will print the chart
+// });
+
+// newArr.forEach(function (element) {
+//   arrAsia.push(
+//     newArr.filter(function (item) {
+//       return item.rigion === 'Asia';
+//     })
+//   );
+//   console.log(arrAsia);
+// });
+
+// let arrEurope = [];
+// let arrAfrice = [];
+// let America = [];
+// let world = [];
