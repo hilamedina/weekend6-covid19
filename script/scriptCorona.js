@@ -115,4 +115,3 @@ getCountry()
 // let arrEurope = [];
 // let arrAfrice = [];
 // let America = [];
-// let world = [];
