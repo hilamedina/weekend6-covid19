@@ -47,15 +47,22 @@ const worldbutton = document.querySelector('.worldbutton');
 Asiabutton.addEventListener('click', () => {
   console.log('hila');
 });
-let newArr = [];
-const AsiaArr = [];
+
+let arrEurope = [];
+let arrAfrica = [];
+let arrAsia = [];
+let arrOceania = [];
+let arrAmerica = [];
+let restOfTheWorld = [];
+
 const urlCountries =
   'https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries';
 async function getCountry() {
-  const response = await fetch(urlCountries);
-  const res = await response.json();
+  const newArr = await fetch(urlCountries);
+  const res = await newArr.json();
+  let allCountriesArr = [];
   for (let item of res.data) {
-    newArr.push({
+    allCountriesArr.push({
       name: item.name,
       code: item.code,
       ConfirmedCases: item.latest_data.confirmed,
@@ -64,54 +71,63 @@ async function getCountry() {
       NumberOfCriticalCondition: item.latest_data.critical,
     });
   }
-  // print();
-  return newArr;
+
+  return allCountriesArr;
 }
 
 const urlContinent =
   'https://intense-mesa-62220.herokuapp.com/https://restcountries.herokuapp.com/api/v1';
-async function getConti() {
-  const fetchContinenrFromUrl = await fetch(urlContinent);
-  const fetchcontinentFromUrlJson = await fetchContinenrFromUrl.json();
+async function getConti(allCountriesArr) {
+  const fetchContinentFromUrl = await fetch(urlContinent);
+  const fetchcontinentFromUrlJson = await fetchContinentFromUrl.json();
   for (let i = 0; i < fetchcontinentFromUrlJson.length; i++) {
-    for (let j = 0; j < newArr.length; j++) {
-      if (newArr[j].name === fetchcontinentFromUrlJson[i].name.common) {
-        newArr[j].region = fetchcontinentFromUrlJson[i].region;
+    for (let j = 0; j < allCountriesArr.length; j++) {
+      if (
+        allCountriesArr[j].name === fetchcontinentFromUrlJson[i].name.common
+      ) {
+        allCountriesArr[j].region = fetchcontinentFromUrlJson[i].region;
       }
     }
   }
-  return newArr;
+  return allCountriesArr;
 }
-getCountry()
-  .then((data) => {
-    console.log(data);
-  })
-  .then(() => {
-    getConti();
-    console.log(newArr);
-  })
-  .then(() => {
-    console.log(newArr);
-    console.log(newArr[0].region);
-    // newArr.forEach(function (element) {
-    //   AsiaArr.push(
-    //     newArr.filter(function (item) {
-    //       return item.region === 'Asia';
-    //   })
-    // );
+function newArrOfRegion(allCountriesArr) {
+  allCountriesArr.forEach((state) => {
+    switch (state.region) {
+      case 'Asia':
+        arrAsia.push(state);
+        break;
+      case 'Europe':
+        arrEurope.push(state);
+        break;
+      case 'America':
+        arrAmerica.push(state);
+        break;
+      case 'Africa':
+        arrAfrica.push(state);
+        break;
+      case 'Oceania':
+        arrOceania.push(state);
+        break;
+      default:
+        restOfTheWorld.push(state);
+    }
   });
-// function that will print the chart
+}
+// getCountry().then((allCountriesArr) => {
+//   getConti(allCountriesArr).then((allCountriesArr) => {
+//     newArrOfRegion(allCountriesArr);
+//     console.log(arrAsia);
+//   });
 // });
 
-// newArr.forEach(function (element) {
-//   arrAsia.push(
-//     newArr.filter(function (item) {
-//       return item.rigion === 'Asia';
-//     })
-//   );
-//   console.log(arrAsia);
-// });
-
-// let arrEurope = [];
-// let arrAfrice = [];
-// let America = [];
+async function main() {
+  let allCountriesArr = await getCountry();
+  allCountriesArr = await getConti(allCountriesArr);
+  allCountriesArr = newArrOfRegion(allCountriesArr);
+  // await graphfunction(arrEurope);
+  // console.log(arrEurope);
+  console.log(arrAsia);
+  // console.log(arrOceania);
+}
+main();
