@@ -2,7 +2,7 @@
 //   .getElementById('#chartContinent')
 //   .getContext('2d');
 
-const gra = document.getElementById('chartContinent').getContext('2d');
+const graph = document.getElementById('chartContinent').getContext('2d');
 
 const Asiabutton = document.querySelector('.Asiabutton');
 const Americabutton = document.querySelector('.Americabutton');
@@ -11,6 +11,9 @@ const Africabutton = document.querySelector('.Africabutton');
 const worldbutton = document.querySelector('.worldbutton');
 const buttonconti = document.querySelector('.buttonconti');
 const contiDiv2 = document.querySelector('.contiDiv2');
+const contiDiv1 = document.querySelector('.contiDiv1');
+
+let chartContinent = new Chart(graph, {});
 
 // Asiabutton.addEventListener('click', () => {
 //   console.log('hila');
@@ -61,13 +64,24 @@ async function getConti(allCountriesArr) {
   }
   return allCountriesArr;
 }
+const world = {
+  asia: {},
+  america: {},
+  africa: {},
+  europe: {},
+};
 function newArrOfRegion(allCountriesArr) {
   allCountriesArr.forEach((state) => {
     switch (state.region) {
       case 'Asia':
-        arrAsia.push(state);
-        asiaConfirmed.push(state.ConfirmedCases);
-        asiaName.push(state.name);
+        world.asia[countries].push(state.name);
+        world.asia[confirmed].push(state.ConfirmedCases);
+        world.asia[deaths].push(state.NumberofDeaths);
+        world.asia[critical].push(state.NumberOfCriticalCondition);
+        world.asia[recovered].push(state.NumberOfRecovered);
+        // arrAsia.push(state);
+        // asiaConfirmed.push(state.ConfirmedCases);
+        // asiaName.push(state.name);
         break;
       case 'Europe':
         arrEurope.push(state);
@@ -86,19 +100,41 @@ function newArrOfRegion(allCountriesArr) {
     }
   });
 }
-async function showStat() {
-  contiDiv2.addEventListener('click', (event) => {
-    // console.log(event.target);
-    if (event.target.innerText === 'Asia') {
-      drawChart(asiaConfirmed, asiaName);
+const changeGraph = (dataGraph) => {
+  drawChart(dataGraph, asiaName);
+};
+
+async function showStat2(object) {
+  contiDiv1.addEventListener('click', (event) => {
+    if (event.target.innerText === 'Confirmed') {
+      drawChart(object[confirmed], object[countries]);
+    }
+    if (event.target.innerText === 'Confirmed') {
+      drawChart(object[confirmed], object[countries]);
+    }
+    if (event.target.innerText === 'Confirmed') {
+      drawChart(object[confirmed], object[countries]);
+    }
+    if (event.target.innerText === 'Confirmed') {
+      drawChart(object[confirmed], object[countries]);
     }
   });
 }
-function drawChart(covidData, region) {
-  const chartContinent = new Chart(gra, {
+async function showStat() {
+  // const arrOfConti = ['Asia', 'Africa', 'Europe', 'America'];
+  contiDiv2.addEventListener('click', (event) => {
+    // for (let conti of arrOfConti)
+    if (event.target.getAttribute('data-type') === 'Asia') {
+      chartContinent.destroy();
+      drawChart(world.asia[confirmed], world.asia[countries]);
+    }
+  });
+}
+function drawChart(covidData, continent) {
+  chartContinent = new Chart(graph, {
     type: 'bar',
     data: {
-      labels: region,
+      labels: continent,
       datasets: [
         {
           label: 'covid statisitc',
@@ -109,6 +145,7 @@ function drawChart(covidData, region) {
     options: {},
   });
 }
+
 // getCountry().then((allCountriesArr) => {
 //   getConti(allCountriesArr).then((allCountriesArr) => {
 //     newArrOfRegion(allCountriesArr);
