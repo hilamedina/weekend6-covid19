@@ -1,14 +1,33 @@
 .body{
     height:100vh;
+    justify-content: center;
+    
 }
-.contiDiv{
+.contiDiv1{
+    margin-top:10%;
     display:flex;
     justify-content: center;
     border:2px red solid;
 }
+.contiDiv2{
+    display:flex;
+    justify-content: center;
+    border:2px red solid;
+    align-items: center;
+}
+.button{
+    font-size:15px;
+}
+.buttonconti{
+    font-size:15px;
+}
+.canvas{
+   margin-top:5%;
+   height: 100%;
+}
 #chartContinent{
-    margin-top:10%;
-    max-width:50% ;
-    max-height:30%;
+    margin: auto;
+    width:50%;
+    height:10%;
     border:2px red solid;
 }
