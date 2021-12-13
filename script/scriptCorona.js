@@ -1,14 +1,5 @@
-//   .getContext('2d');
-// const chartContinent = document
-//   .getElementById('#chartContinent')
-
 const graph = document.getElementById('chartContinent').getContext('2d');
 
-// const Asiabutton = document.querySelector('.Asiabutton');
-// const Americabutton = document.querySelector('.Americabutton');
-// const Europebutton = document.querySelector('.Europebutton');
-// const Africabutton = document.querySelector('.Africabutton');
-// const worldbutton = document.querySelector('.worldbutton');
 const buttonConti = document.querySelector('.buttonConti');
 const contiDiv2 = document.querySelector('.contiDiv2');
 const contiDiv1 = document.querySelector('.contiDiv1');
@@ -18,11 +9,12 @@ const oceaniaButton = document.querySelector('.oceaniaButton');
 const americaButton = document.querySelector('.americaButton');
 const africaButton = document.querySelector('.africaButton');
 
-let chartContinent = new Chart(graph, {});
+const asiaDeathButton = document.querySelector('.deaths');
+const countriesForEachRegion = document.querySelector(
+  '.countriesForEachRegion'
+);
 
-// Asiabutton.addEventListener('click', () => {
-//   console.log('hila');
-// });
+let chartContinent = new Chart(graph, {});
 
 let arrEurope = [];
 let europeConfirmed = [];
@@ -78,7 +70,6 @@ async function getCountry() {
       numberOfCriticalCondition: item.latest_data.critical,
     });
   }
-
   return allCountriesArr;
 }
 
@@ -104,15 +95,11 @@ async function getConti(allCountriesArr) {
 //   africa: {},
 //   europe: {},
 // };
+
 function newArrOfRegion(allCountriesArr) {
   allCountriesArr.forEach((state) => {
     switch (state.region) {
       case 'Asia':
-        // world.asia[countries].push(state.name);
-        // world.asia[confirmed].push(state.ConfirmedCases);
-        // world.asia[deaths].push(state.NumberofDeaths);
-        // world.asia[critical].push(state.NumberOfCriticalCondition);
-        // world.asia[recovered].push(state.NumberOfRecovered);
         arrAsia.push(state);
         asiaConfirmed.push(state.ConfirmedCases);
         asiaName.push(state.name);
@@ -128,7 +115,7 @@ function newArrOfRegion(allCountriesArr) {
         europeRecoverd.push(state.numberOfRecovered);
         europeCriticalCondition.push(state.numberOfCriticalCondition);
         break;
-      case 'America':
+      case 'Americas':
         arrAmerica.push(state);
         americaConfirmed.push(state.ConfirmedCases);
         americaName.push(state.name);
@@ -157,61 +144,178 @@ function newArrOfRegion(allCountriesArr) {
     }
   });
 }
-// const changeGraph = (dataGraph) => {
-//   drawChart(dataGraph, asiaName);
-// };
 
-// async function showStat2(object) {
-//   contiDiv1.addEventListener('click', (event) => {
-//     if (event.target.innerText === 'Confirmed') {
-//       drawChart(object[confirmed], object[countries]);
-//     }
-//     if (event.target.innerText === 'Confirmed') {
-//       drawChart(object[confirmed], object[countries]);
-//     }
-//     if (event.target.innerText === 'Confirmed') {
-//       drawChart(object[confirmed], object[countries]);
-//     }
-//     if (event.target.innerText === 'Confirmed') {
-//       drawChart(object[confirmed], object[countries]);
-//     }
-//   });
-// }
+function createButtonsForEachCountry(region) {
+  countriesForEachRegion.innerText = '';
+  for (let country of region) {
+    // console.log(country);
+    let btn = document.createElement('button');
+    btn.innerText = country;
+    document.querySelector('.countriesForEachRegion').appendChild(btn);
+  }
+}
 async function showStat() {
-  // const arrOfConti = ['Asia', 'Africa', 'Europe', 'America'];
-  // const buttons = document.getElementsByClassName('buttonConti');
-  // for (button in buttons) {
+  contiDiv2.addEventListener('click', (e) => {
+    console.log(e.target.className);
+    if (e.target.className.includes('asia')) {
+      createButtonsForEachCountry(asiaName);
+      chartContinent.destroy();
+      drawChart(asiaConfirmed, asiaName);
+      showStatsByCaseAsia();
+    } else if (e.target.className.includes('america')) {
+      createButtonsForEachCountry(americaName);
+      chartContinent.destroy();
+      drawChart(americaConfirmed, americaName);
+      showStatsByCaseAmerica();
+    } else if (e.target.className.includes('europe')) {
+      createButtonsForEachCountry(europeName);
+      chartContinent.destroy();
+      drawChart(europeConfirmed, europeName);
+      showStatsByCaseEurope();
+    } else if (e.target.className.includes('africa')) {
+      createButtonsForEachCountry(africaName);
+      chartContinent.destroy();
+      drawChart(africaConfirmed, africaName);
+      showStatsByCaseAfrica();
+    } else if (e.target.className.includes('oceania')) {
+      createButtonsForEachCountry(oceaniaName);
+      chartContinent.destroy();
+      drawChart(oceaniaConfirmed, oceaniaName);
+      showStatsByCaseOceania();
+    }
+  });
+}
 
-  asiaButton.addEventListener('click', () => {
-    chartContinent.destroy();
-    drawChart(asiaConfirmed, asiaName);
+async function showStatsByCaseAsia() {
+  contiDiv1.addEventListener('click', (e2) => {
+    console.log(e2.target.className);
+    if (e2.target.className.includes('confirmed')) {
+      console.log(asiaConfirmed);
+      chartContinent.destroy();
+      drawChart(asiaConfirmed, asiaName);
+    } else if (e2.target.className.includes('deaths')) {
+      console.log(asiaDeaths);
+      chartContinent.destroy();
+      drawChart(asiaDeaths, asiaName);
+    } else if (e2.target.className.includes('recovered')) {
+      console.log(asiaRecoverd);
+      chartContinent.destroy();
+      drawChart(asiaRecoverd, asiaName);
+    } else {
+      console.log(asiaCriticalCondition);
+      chartContinent.destroy();
+      drawChart(asiaCriticalCondition, asiaName);
+    }
   });
-  europeButton.addEventListener('click', () => {
-    chartContinent.destroy();
-    drawChart(europeConfirmed, europeName);
+}
+
+//america
+async function showStatsByCaseAmerica() {
+  contiDiv1.addEventListener('click', (e2) => {
+    console.log(e2.target.className);
+    if (e2.target.className.includes('confirmed')) {
+      console.log(americaConfirmed);
+      chartContinent.destroy();
+      drawChart(americaConfirmed, americaName);
+    } else if (e2.target.className.includes('deaths')) {
+      console.log(americaDeaths);
+      chartContinent.destroy();
+      drawChart(americaDeaths, americaName);
+    } else if (e2.target.className.includes('recovered')) {
+      console.log(americaRecoverd);
+      chartContinent.destroy();
+      drawChart(americaRecoverd, americaName);
+    } else {
+      console.log(americaCriticalCondition);
+      chartContinent.destroy();
+      drawChart(americaCriticalCondition, americaName);
+    }
   });
-  africaButton.addEventListener('click', () => {
-    chartContinent.destroy();
-    drawChart(africaConfirmed, africaName);
+}
+
+//europe
+async function showStatsByCaseEurope() {
+  contiDiv1.addEventListener('click', (e2) => {
+    console.log(e2.target.className);
+    if (e2.target.className.includes('confirmed')) {
+      console.log(europeConfirmed);
+      chartContinent.destroy();
+      drawChart(europeConfirmed, europeName);
+    } else if (e2.target.className.includes('deaths')) {
+      console.log(europeDeaths);
+      chartContinent.destroy();
+      drawChart(europeDeaths, europeName);
+    } else if (e2.target.className.includes('recovered')) {
+      console.log(europeRecoverd);
+      chartContinent.destroy();
+      drawChart(europeRecoverd, europeName);
+    } else {
+      console.log(europeCriticalCondition);
+      chartContinent.destroy();
+      drawChart(europeCriticalCondition, europeName);
+    }
   });
-  oceaniaButton.addEventListener('click', () => {
-    chartContinent.destroy();
-    drawChart(oceaniaConfirmed, oceaniaName);
+}
+
+//africa
+async function showStatsByCaseAfrica() {
+  contiDiv1.addEventListener('click', (e2) => {
+    console.log(e2.target.className);
+    if (e2.target.className.includes('confirmed')) {
+      console.log(africaConfirmed);
+      chartContinent.destroy();
+      drawChart(africaConfirmed, africaName);
+    } else if (e2.target.className.includes('deaths')) {
+      console.log(africaDeaths);
+      chartContinent.destroy();
+      drawChart(africaDeaths, africaName);
+    } else if (e2.target.className.includes('recovered')) {
+      console.log(africaRecoverd);
+      chartContinent.destroy();
+      drawChart(africaRecoverd, africaName);
+    } else {
+      console.log(africaCriticalCondition);
+      chartContinent.destroy();
+      drawChart(africaCriticalCondition, africaName);
+    }
   });
-  americaButton.addEventListener('click', () => {
-    chartContinent.destroy();
-    drawChart(americaConfirmed, americaName);
+}
+
+//oceania
+async function showStatsByCaseOceania() {
+  contiDiv1.addEventListener('click', (e2) => {
+    console.log(e2.target.className);
+    if (e2.target.className.includes('confirmed')) {
+      console.log(oceaniaConfirmed);
+      chartContinent.destroy();
+      drawChart(oceaniaConfirmed, oceaniaName);
+    } else if (e2.target.className.includes('deaths')) {
+      console.log(oceaniaDeaths);
+      chartContinent.destroy();
+      drawChart(oceaniaDeaths, oceaniaName);
+    } else if (e2.target.className.includes('recovered')) {
+      console.log(oceaniaRecoverd);
+      chartContinent.destroy();
+      drawChart(oceaniaRecoverd, oceaniaName);
+    } else {
+      console.log(oceaniaCriticalCondition);
+      chartContinent.destroy();
+      drawChart(oceaniaCriticalCondition, oceaniaName);
+    }
   });
 }
 
 function drawChart(covidData, continent) {
   chartContinent = new Chart(graph, {
-    type: 'bar',
+    type: 'line',
     data: {
       labels: continent,
       datasets: [
         {
           label: 'covid statisitc',
+          fill: false,
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
           data: covidData,
         },
       ],
@@ -220,25 +324,13 @@ function drawChart(covidData, continent) {
   });
 }
 
-// getCountry().then((allCountriesArr) => {
-//   getConti(allCountriesArr).then((allCountriesArr) => {
-//     newArrOfRegion(allCountriesArr);
-//     console.log(arrAsia);
-//   });
-// });
-
 async function main() {
   let allCountriesArr = await getCountry();
+  console.log('here', allCountriesArr);
   allCountriesArr = await getConti(allCountriesArr);
   allCountriesArr = newArrOfRegion(allCountriesArr);
   await showStat();
 
-  // console.log(allCountriesArr);
-  // await graphfunction(arrEurope);
-  // console.log(arrEurope);
-  // console.log(arrAsia);
-  // console.log(arrAfrica);
-
-  // console.log(arrOceania);
+  // await showStatsByCase();
 }
 main();

@@ -1,222 +1,231 @@
-const chartContinent = document
-  .getElementById('chartContinent')
-  .getContext('2d');
-const myChart = new Chart(chartContinent, {
-  type: 'bar',
-  data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true,
-      },
-    },
-  },
-});
+//   .getContext('2d');
+// const chartContinent = document
+//   .getElementById('#chartContinent')
 
-const Asiabutton = document.querySelector('.Asiabutton');
-const Americabutton = document.querySelector('.Americabutton');
-const Europebutton = document.querySelector('.Europebutton');
-const Africabutton = document.querySelector('.Africabutton');
-const worldbutton = document.querySelector('.worldbutton');
+const graph = document.getElementById('chartContinent').getContext('2d');
+const buttonConti = document.querySelector('.buttonConti');
+const contiDiv2 = document.querySelector('.contiDiv2');
+const contiDiv1 = document.querySelector('.contiDiv1');
+const asiaButton = document.querySelector('.asiaButton');
+const europeButton = document.querySelector('.europeButton');
+const oceaniaButton = document.querySelector('.oceaniaButton');
+const americaButton = document.querySelector('.americaButton');
+const africaButton = document.querySelector('.africaButton');
 
-Asiabutton.addEventListener('click', () => {
-  console.log('hila');
-});
-// let newArr = [];
-const arrEurope = [];
-const arrAsia = [];
-const arrAfrica = [];
-const arrAmerica = [];
-const arrOceania = [];
-const restOfTheWorld = [];
+let chartContinent = new Chart(graph, {});
+
+// Asiabutton.addEventListener('click', () => {
+//   console.log('hila');
+// });
+
+let arrEurope = [];
+let europeConfirmed = [];
+let europeName = [];
+let europeDeaths = [];
+let europeRecoverd = [];
+let europeCriticalCondition = [];
+
+let arrAfrica = [];
+let africaConfirmed = [];
+let africaName = [];
+let africaDeaths = [];
+let africaRecoverd = [];
+let africaCriticalCondition = [];
+
+let arrAmerica = [];
+let americaConfirmed = [];
+let americaName = [];
+let americaDeaths = [];
+let americaRecoverd = [];
+let americaCriticalCondition = [];
+
+let arrAsia = [];
+let asia = [];
+let asiaName = [];
+let asiaConfirmed = [];
+let asiaRecoverd = [];
+let asiaDeaths = [];
+let asiaCriticalCondition = [];
+
+let arrOceania = [];
+let oceaniaConfirmed = [];
+let oceaniaName = [];
+let oceaniaDeaths = [];
+let oceaniaRecoverd = [];
+let oceaniaCriticalCondition = [];
+
+let restOfTheWorld = [];
 
 const urlCountries =
   'https://intense-mesa-62220.herokuapp.com/https://corona-api.com/countries';
 async function getCountry() {
-  try {
-    let newArr = [];
-    const response = await fetch(urlCountries);
-    const res = await response.json();
-    // for (let item of res.data) {
-    //   newArr.push({
-    //     name: item.name,
-    //     code: item.code,
-    //     ConfirmedCases: item.latest_data.confirmed,
-    //     NumberofDeaths: item.latest_data.deaths,
-    //     NumberOfRecovered: item.latest_data.recovered,
-    //     NumberOfCriticalCondition: item.latest_data.critical,
-    //   });
-    // }
-    return res;
-  } catch (error) {
-    console.log(error);
+  const newArr = await fetch(urlCountries);
+  const res = await newArr.json();
+  let allCountriesArr = [];
+  for (let item of res.data) {
+    allCountriesArr.push({
+      name: item.name,
+      code: item.code,
+      ConfirmedCases: item.latest_data.confirmed,
+      numberofDeaths: item.latest_data.deaths,
+      numberOfRecovered: item.latest_data.recovered,
+      numberOfCriticalCondition: item.latest_data.critical,
+    });
   }
-}
-async function makeObj(res) {
-  console.log('rvfksdp', res);
-  let newArr = [];
-
-  // for (let item of res.data) {
-  //   newArr.push({
-  //     name: item.name,
-  //     code: item.code,
-  //     ConfirmedCases: item.latest_data.confirmed,
-  //     NumberofDeaths: item.latest_data.deaths,
-  //     NumberOfRecovered: item.latest_data.recovered,
-  //     NumberOfCriticalCondition: item.latest_data.critical,
-  //   });
-  // }
-  // newArr = await Promise.all(newArr);
-  console.log('dan', newArr);
-  return newArr;
+  return allCountriesArr;
 }
 
 const urlContinent =
   'https://intense-mesa-62220.herokuapp.com/https://restcountries.herokuapp.com/api/v1';
-async function getConti(newArr) {
-  try {
-    console.log('hila', newArr);
-    const fetchContinenrFromUrl = await fetch(urlContinent);
-    const fetchcontinentFromUrlJson = await fetchContinenrFromUrl.json();
-    for (let i = 0; i < fetchcontinentFromUrlJson.length; i++) {
-      for (let j = 0; j < newArr.length; j++) {
-        if (newArr[j].name === fetchcontinentFromUrlJson[i].name.common) {
-          newArr[j].region = fetchcontinentFromUrlJson[i].region;
-        }
+async function getConti(allCountriesArr) {
+  const fetchContinentFromUrl = await fetch(urlContinent);
+  const fetchcontinentFromUrlJson = await fetchContinentFromUrl.json();
+  for (let i = 0; i < fetchcontinentFromUrlJson.length; i++) {
+    for (let j = 0; j < allCountriesArr.length; j++) {
+      if (
+        allCountriesArr[j].name === fetchcontinentFromUrlJson[i].name.common
+      ) {
+        allCountriesArr[j].region = fetchcontinentFromUrlJson[i].region;
       }
     }
-    return newArr;
-  } catch (error) {
-    console.log(error);
   }
+  return allCountriesArr;
 }
-
-// function addregion(fetchcontinentFromUrlJson) {
-//   try {
-//     let newArr = [];
-//     for (let i = 0; i < fetchcontinentFromUrlJson.length; i++) {
-//       for (let j = 0; j < newArr.length; j++) {
-//         if (newArr[j].name === fetchcontinentFromUrlJson[i].name.common) {
-//           newArr[j].region = fetchcontinentFromUrlJson[i].region;
-//         }
-//       }
-//     }
-//     return newArr;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-function newArrOfRegion(newArr) {
-  try {
-    // console.log('hil2', newArr[0].region);
-    newArr.forEach((state) => {
-      console.log('hila4', arrAsia);
-      switch (state.region) {
-        case 'Asia':
-          arrAsia.push(state.name);
-          break;
-        case 'Europe':
-          arrEurope.push(state.name);
-          break;
-        case 'America':
-          arrAmerica.push(state.name);
-          break;
-        case 'Africa':
-          arrAfrica.push(state.name);
-          break;
-        case 'Oceania':
-          arrOceania.push(state.name);
-          break;
-        default:
-          restOfTheWorld.push(state.name);
-      }
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-getCountry()
-  .then((res) => {
-    makeObj(res);
-  })
-  .then((newArr) => {
-    getConti(newArr);
-  })
-  .then((res) => {
-    newArrOfRegion(res);
-  })
-  .then((res) => {
-    console.log('dan', res);
+// const world = {
+//   asia: {},
+//   america: {},
+//   africa: {},
+//   europe: {},
+// };
+function newArrOfRegion(allCountriesArr) {
+  allCountriesArr.forEach((state) => {
+    switch (state.region) {
+      case 'Asia':
+        // world.asia[countries].push(state.name);
+        // world.asia[confirmed].push(state.ConfirmedCases);
+        // world.asia[deaths].push(state.NumberofDeaths);
+        // world.asia[critical].push(state.NumberOfCriticalCondition);
+        // world.asia[recovered].push(state.NumberOfRecovered);
+        arrAsia.push(state);
+        asiaConfirmed.push(state.ConfirmedCases);
+        asiaName.push(state.name);
+        asiaDeaths.push(state.numberofDeaths);
+        asiaRecoverd.push(state.numberOfRecovered);
+        asiaCriticalCondition.push(state.numberOfCriticalCondition);
+        break;
+      case 'Europe':
+        arrEurope.push(state);
+        europeConfirmed.push(state.ConfirmedCases);
+        europeName.push(state.name);
+        europeDeaths.push(state.numberofDeaths);
+        europeRecoverd.push(state.numberOfRecovered);
+        europeCriticalCondition.push(state.numberOfCriticalCondition);
+        break;
+      case 'America':
+        arrAmerica.push(state);
+        americaConfirmed.push(state.ConfirmedCases);
+        americaName.push(state.name);
+        americaDeaths.push(state.numberofDeaths);
+        americaRecoverd.push(state.numberOfRecovered);
+        americaCriticalCondition.push(state.numberOfCriticalCondition);
+        break;
+      case 'Africa':
+        arrAfrica.push(state);
+        africaConfirmed.push(state.ConfirmedCases);
+        africaName.push(state.name);
+        africaDeaths.push(state.numberofDeaths);
+        africaRecoverd.push(state.numberOfRecovered);
+        africaCriticalCondition.push(state.numberOfCriticalCondition);
+        break;
+      case 'Oceania':
+        arrOceania.push(state);
+        oceaniaConfirmed.push(state.ConfirmedCases);
+        oceaniaName.push(state.name);
+        oceaniaDeaths.push(state.numberofDeaths);
+        oceaniaRecoverd.push(state.numberOfRecovered);
+        oceaniaCriticalCondition.push(state.numberOfCriticalCondition);
+        break;
+      default:
+        restOfTheWorld.push(state);
+    }
   });
+}
+// const changeGraph = (dataGraph) => {
+//   drawChart(dataGraph, asiaName);
+// };
 
-//     console.log(newArr);
-//     for (const key in newArr[0]) {
-//       console.log(key);
-//       console.log(newArr[0][key]);
+// async function showStat2(object) {
+//   contiDiv1.addEventListener('click', (event) => {
+//     if (event.target.innerText === 'Confirmed') {
+//       drawChart(object[confirmed], object[countries]);
+//     }
+//     if (event.target.innerText === 'Confirmed') {
+//       drawChart(object[confirmed], object[countries]);
+//     }
+//     if (event.target.innerText === 'Confirmed') {
+//       drawChart(object[confirmed], object[countries]);
+//     }
+//     if (event.target.innerText === 'Confirmed') {
+//       drawChart(object[confirmed], object[countries]);
 //     }
 //   });
-// });
+// }
+async function showStat() {
+  // const arrOfConti = ['Asia', 'Africa', 'Europe', 'America'];
+  // const buttons = document.getElementsByClassName('buttonConti');
+  // for (button in buttons) {
 
-// getCountry()
-//   .then((data) => {
-//   })
-//   .then(() => {
-//     getConti();
-//     // console.log(newArr);
-//   })
-//   .then(() => {
-//     console.log(newArr);
-//     for (const key in newArr[12]) {
-//       console.log(key);
-//       console.log(newArr[12][key]);
-//     }
-//     console.log(newArr[12].name);
-//     newArr.forEach(function (element) {
-//       AsiaArr.push(
-//         newArr.filter(function (item) {
-//           return item.region === 'Asia';
-//         })
-//       );
-//     });
-//     // function that will print the chart
-//   });
+  // asiaButton.addEventListener('click', () => {
+  //   chartContinent.destroy();
+  //   drawChart(asiaConfirmed, asiaName);
+  // });
+  // europeButton.addEventListener('click', () => {
+  //   chartContinent.destroy();
+  //   drawChart(europeConfirmed, europeName);
+  //   });
+  //   africaButton.addEventListener('click', () => {
+  //     chartContinent.destroy();
+  //     drawChart(africaConfirmed, africaName);
+  //   });
+  //   oceaniaButton.addEventListener('click', () => {
+  //     chartContinent.destroy();
+  //     drawChart(oceaniaConfirmed, oceaniaName);
+  //   });
+  //   americaButton.addEventListener('click', () => {
+  //     chartContinent.destroy();
+  //     drawChart(americaConfirmed, americaName);
+  //   });
+  // }
 
-// newArr.forEach(function (element) {
-//   arrAsia.push(
-//     newArr.filter(function (item) {
-//       return item.rigion === 'Asia';
-//     })
-//   );
-//   console.log(arrAsia);
-// });
+  function drawChart(covidData, continent) {
+    chartContinent = new Chart(graph, {
+      type: 'bar',
+      data: {
+        labels: continent,
+        datasets: [
+          {
+            label: 'covid statisitc',
+            data: covidData,
+          },
+        ],
+      },
+      options: {},
+    });
+  }
 
-// let arrEurope = [];
-// let arrAfrice = [];
-// let America = [];
-// let world = [];
+  async function main() {
+    let allCountriesArr = await getCountry();
+    allCountriesArr = await getConti(allCountriesArr);
+    allCountriesArr = newArrOfRegion(allCountriesArr);
+    await showStat();
+
+    // console.log(allCountriesArr);
+    // await graphfunction(arrEurope);
+    // console.log(arrEurope);
+    // console.log(arrAsia);
+    // console.log(arrAfrica);
+
+    // console.log(arrOceania);
+  }
+}
+main();
