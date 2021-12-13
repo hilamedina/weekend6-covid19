@@ -64,24 +64,25 @@ async function getConti(allCountriesArr) {
   }
   return allCountriesArr;
 }
-const world = {
-  asia: {},
-  america: {},
-  africa: {},
-  europe: {},
-};
+// const world = {
+//   asia: {},
+//   america: {},
+//   africa: {},
+//   europe: {},
+// };
 function newArrOfRegion(allCountriesArr) {
   allCountriesArr.forEach((state) => {
     switch (state.region) {
       case 'Asia':
-        world.asia[countries].push(state.name);
-        world.asia[confirmed].push(state.ConfirmedCases);
-        world.asia[deaths].push(state.NumberofDeaths);
-        world.asia[critical].push(state.NumberOfCriticalCondition);
-        world.asia[recovered].push(state.NumberOfRecovered);
-        // arrAsia.push(state);
-        // asiaConfirmed.push(state.ConfirmedCases);
-        // asiaName.push(state.name);
+        // world.asia[countries].push(state.name);
+        // world.asia[confirmed].push(state.ConfirmedCases);
+        // world.asia[deaths].push(state.NumberofDeaths);
+        // world.asia[critical].push(state.NumberOfCriticalCondition);
+        // world.asia[recovered].push(state.NumberOfRecovered);
+        arrAsia.push(state);
+        asiaConfirmed.push(state.ConfirmedCases);
+        asiaName.push(state.name);
+        // console.log(asiaName);
         break;
       case 'Europe':
         arrEurope.push(state);
@@ -100,36 +101,51 @@ function newArrOfRegion(allCountriesArr) {
     }
   });
 }
-const changeGraph = (dataGraph) => {
-  drawChart(dataGraph, asiaName);
-};
+// const changeGraph = (dataGraph) => {
+//   drawChart(dataGraph, asiaName);
+// };
 
-async function showStat2(object) {
-  contiDiv1.addEventListener('click', (event) => {
-    if (event.target.innerText === 'Confirmed') {
-      drawChart(object[confirmed], object[countries]);
-    }
-    if (event.target.innerText === 'Confirmed') {
-      drawChart(object[confirmed], object[countries]);
-    }
-    if (event.target.innerText === 'Confirmed') {
-      drawChart(object[confirmed], object[countries]);
-    }
-    if (event.target.innerText === 'Confirmed') {
-      drawChart(object[confirmed], object[countries]);
-    }
-  });
-}
+// async function showStat2(object) {
+//   contiDiv1.addEventListener('click', (event) => {
+//     if (event.target.innerText === 'Confirmed') {
+//       drawChart(object[confirmed], object[countries]);
+//     }
+//     if (event.target.innerText === 'Confirmed') {
+//       drawChart(object[confirmed], object[countries]);
+//     }
+//     if (event.target.innerText === 'Confirmed') {
+//       drawChart(object[confirmed], object[countries]);
+//     }
+//     if (event.target.innerText === 'Confirmed') {
+//       drawChart(object[confirmed], object[countries]);
+//     }
+//   });
+// }
 async function showStat() {
   // const arrOfConti = ['Asia', 'Africa', 'Europe', 'America'];
-  contiDiv2.addEventListener('click', (event) => {
-    // for (let conti of arrOfConti)
-    if (event.target.getAttribute('data-type') === 'Asia') {
-      chartContinent.destroy();
-      drawChart(world.asia[confirmed], world.asia[countries]);
-    }
+  // const buttons = document.getElementsByClassName('buttonConti');
+  // for (button in buttons) {
+  contiDiv2.addEventListener('click', () => {
+    chartContinent.destroy();
+    drawChart(asiaConfirmed, asiaName);
   });
 }
+asiaButton.addEventListener('click', (e) => {
+  charted(asia, asiaConfirmed);
+});
+europeButton.addEventListener('click', () => {
+  charted(europe);
+});
+africaButton.addEventListener('click', () => {
+  charted(africa);
+});
+oceaniaButton.addEventListener('click', () => {
+  charted(oceania);
+});
+americasButton.addEventListener('click', () => {
+  charted(americas);
+});
+
 function drawChart(covidData, continent) {
   chartContinent = new Chart(graph, {
     type: 'bar',
@@ -161,8 +177,8 @@ async function main() {
   // console.log(allCountriesArr);
   // await graphfunction(arrEurope);
   // console.log(arrEurope);
-  console.log(arrAsia);
-  console.log(arrAfrica);
+  // console.log(arrAsia);
+  // console.log(arrAfrica);
 
   // console.log(arrOceania);
 }
