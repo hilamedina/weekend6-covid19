@@ -24,13 +24,12 @@
     /* margin-top:10%; */
     display:flex;
     justify-content: center;
-    border:2px red solid;
+
   }
   
   .contiDiv2{
     display:flex;
     justify-content: center;
-    border:2px red solid;
     align-items: center;
   }
   
@@ -60,7 +59,7 @@
       height:30%;
       display:flex;
       justify-content: space-around;
-      border:violet 2px solid;
+     
   }
   .box{
       width:10%;
